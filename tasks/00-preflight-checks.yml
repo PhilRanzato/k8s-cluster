@@ -1,1 +1,52 @@
 ---
+- name: "Ensure OS is as expected"
+  meta: end_host
+  when: ansible_distribution != 'CentOS' and ansible_distribution != 'RedHat'
+
+- name: "Ensure host RAM is enough to run Kubernetes"
+  fail:
+    msg: "RAM is not enough! Kubernetes needs at least 2GB, you have {{ ansible_memory_mb.real.total }}MB of RAM"
+  when: ansible_memory_mb.real.total < 2048
+
+- name: "Ensure vCPUs are enough to run Kubernetes"
+  fail:
+    msg: "vCPUs are not enough! Kubernetes needs at least 2 vCPU, you have {{ ansible_processor_vcpus }} vCPU(s)"
+  when: ansible_processor_vcpus < 2
+
+- name: "Ensure docker is installed when chosen as CRI"
+  when: cri.docker
+  block:
+
+  - name: "Get packages facts"
+    package_facts:
+
+  - name: "Ensure docker is installed"
+    include_role:
+      name: "philranzato.docker-ce"
+    when: not ansible_facts.packages['docker-ce'] is defined and not ansible_facts.packages['docker-ee'] is defined
+
+- name: "Enable the bridge rule on the host"
+  sysctl:
+    name: "{{ item }}"
+    value: "1"
+    sysctl_set: yes
+    state: present
+    reload: yes
+  loop:
+    - "net.bridge.bridge-nf-call-iptables"
+    - "net.bridge.bridge-nf-call-ip6tables"
+
+- name: Remove swapfile from /etc/fstab
+  mount:
+    name: "swap"
+    fstype: swap
+    state: absent
+
+- name: "Disable swappiness"
+  sysctl:
+    name: vm.swappiness
+    value: "0"
+    sysctl_set: yes
+    state: present
+    reload: yes
+    sysctl_file: "/etc/sysctl.d/10-swapoff.conf"
