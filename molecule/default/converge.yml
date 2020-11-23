@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    example: "test"
+  tasks:
+    - name: "Include philranzato.ansible-role/"
+      include_role:
+        name: "philranzato.ansible-role/"

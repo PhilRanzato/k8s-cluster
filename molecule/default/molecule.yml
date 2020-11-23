@@ -1,0 +1,24 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: role
+    image: docker.io/pycontribs/centos:7
+    pre_build_image: true
+    capabilities:
+      - SYS_ADMIN
+    privileged: true
+provisioner:
+  name: ansible
+  # env: 
+  #   MOLECULE_NO_LOG: false
+scenario:
+  name: default
+verifier:
+  name: ansible
+lint: |
+  set -e
+  ansible-lint
+  flake8
