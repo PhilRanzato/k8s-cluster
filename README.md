@@ -1,7 +1,7 @@
-philranzato.ansible-role
+k8s-cluster
 =========
 
-A brief description of the role goes here.
+Installs Kubernetes tools and bootstraps a Kubernetes cluster.
 
 Requirements
 ------------
@@ -26,7 +26,7 @@ Example Playbook
 - name: "Play"
   hosts: servers
   roles:
-  - role: philranzato.ansible-role
+  - role: philranzato.k8s-cluster
 ```
 
 License

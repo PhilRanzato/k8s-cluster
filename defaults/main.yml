@@ -1,2 +1,5 @@
 ---
-# defaults file for philranzato.ansible-role
+cri:
+  docker: false
+  cri_o: false
+  containerd: false

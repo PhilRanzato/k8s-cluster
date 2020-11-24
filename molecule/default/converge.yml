@@ -2,8 +2,9 @@
 - name: Converge
   hosts: all
   vars:
-    example: "test"
+    cri:
+      docker: true
   tasks:
-    - name: "Include philranzato.ansible-role/"
+    - name: "Include k8s-cluster/"
       include_role:
-        name: "philranzato.ansible-role/"
+        name: "k8s-cluster/"
