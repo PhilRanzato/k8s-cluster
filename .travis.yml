@@ -7,7 +7,10 @@ services:
   - docker
 install:
   - python3 -m pip install ansible
+  - python3 -m pip install ansible-lint
+  - python3 -m pip install flake8
   - python3 -m pip install molecule
   - python3 -m pip install molecule-docker
+  - python3 -m pip install molecule[lint]
 script:
   - molecule test -s default
