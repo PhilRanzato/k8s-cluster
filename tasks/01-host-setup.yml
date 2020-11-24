@@ -1,0 +1,46 @@
+---
+- name: "Enable the bridge rule on the host"
+  sysctl:
+    name: "{{ item }}"
+    value: "1"
+    sysctl_set: yes
+    state: present
+    reload: yes
+    sysctl_file: "/etc/sysctl.d/10-iptables.conf"
+  loop:
+    - "net.bridge.bridge-nf-call-iptables"
+    - "net.bridge.bridge-nf-call-ip6tables"
+  become: true
+
+- name: Remove swapfile from /etc/fstab
+  mount:
+    name: "swap"
+    fstype: swap
+    state: absent
+  become: true
+
+- name: "Disable swappiness"
+  sysctl:
+    name: vm.swappiness
+    value: "0"
+    sysctl_set: yes
+    state: present
+    reload: yes
+    sysctl_file: "/etc/sysctl.d/10-swapoff.conf"
+  become: true
+
+- name: "Ensure firewall is active"
+  systemd:
+    name: firewalld
+    state: started
+    enabled: true
+  become: true
+
+- name: "Open firewall ports"
+  firewalld:
+    port: "{{ item }}/tcp"
+    permanent: yes
+    immediate: yes
+    state: enabled
+  loop: "{% if node.is_master %}{{ ports.master }}{% elif node.is_worker %}{{ ports.worker }}{% else %}{{ ports.master }}{% endif %}"
+  become: true

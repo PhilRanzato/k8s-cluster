@@ -3,3 +3,20 @@ cri:
   docker: false
   cri_o: false
   containerd: false
+
+node:
+  is_master: true
+  is_worker: false
+
+nodeport_range: '30000-32767'
+
+ports:
+  master:
+  - '6443' # Used by: all. Purpose: Kubernetes API server
+  - '2379-2380' # Used by: kube-apiserver, etcd. Purpose: etcd server client API
+  - '10250' # Used by: Self, Control plane. Purpose: Kubelet
+  - '10251' # Used by: Self. Purpose: kube-scheduler
+  - '10252' # Used by: Self. Purpose: kube-controller-manager
+  worker:
+  - '10250' # Used by: Kubelet API Self, Control plane. Purpose: Kubelet
+  -  "{{ nodeport_range }}" # Used by: NodePort Services, Control plane. Purpose: All
