@@ -42,5 +42,5 @@
     permanent: yes
     immediate: yes
     state: enabled
-  loop: "{% if node.is_master %}{{ ports.master }}{% elif node.is_worker %}{{ ports.worker }}{% else %}{{ ports.master }}{% endif %}"
+  loop: "{% if node.is_master is defined and node.is_master %}{{ ports.master }}{% elif node.is_worker is defined and node.is_worker %}{{ ports.worker }}{% else %}{{ ports.master }}{% endif %}"
   become: true
