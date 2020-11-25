@@ -21,7 +21,7 @@
     disable_excludes: kubernetes
     state: present
   loop:
-  - "kubelet{% if kubernetes.version is defined %}-{{ kubernetes.version }}{% endif %}"
-  - "kubeadm{% if kubernetes.version is defined %}-{{ kubernetes.version }}{% endif %}"
-  - "kubectl{% if kubernetes.version is defined %}-{{ kubernetes.version }}{% endif %}"
+  - "kubelet{% if node.kubernetes.version is defined %}-{{ node.kubernetes.version }}{% endif %}"
+  - "kubeadm{% if node.kubernetes.version is defined %}-{{ node.kubernetes.version }}{% endif %}"
+  - "kubectl{% if node.kubernetes.version is defined %}-{{ node.kubernetes.version }}{% endif %}"
   notify: "Start and Enable Kubelet"

@@ -23,4 +23,4 @@ ports:
   - '10252' # Used by: Self. Purpose: kube-controller-manager
   worker:
   - '10250' # Used by: Kubelet API Self, Control plane. Purpose: Kubelet
-  -  "{{ kubernetes.nodeport_range }}" # Used by: NodePort Services, Control plane. Purpose: All
+  -  "{{ nodeport_range }}" # Used by: NodePort Services, Control plane. Purpose: All
