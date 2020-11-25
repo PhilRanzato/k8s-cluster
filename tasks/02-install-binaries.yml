@@ -8,12 +8,14 @@
 - name: "Disable Selinux"
   selinux:
     state: disabled
+  become: true
   register: selinux
 
 - name: "Reboot if required"
   reboot:
     msg: "Rebooting after disabling selinux"
   when: selinux.reboot_required
+  become: true
 
 - name: "Install Kubernetes binaries"
   yum:
@@ -24,4 +26,5 @@
   - "kubelet{% if node.kubernetes.version is defined %}-{{ node.kubernetes.version }}{% endif %}"
   - "kubeadm{% if node.kubernetes.version is defined %}-{{ node.kubernetes.version }}{% endif %}"
   - "kubectl{% if node.kubernetes.version is defined %}-{{ node.kubernetes.version }}{% endif %}"
+  become: true
   notify: "Start and Enable Kubelet"
