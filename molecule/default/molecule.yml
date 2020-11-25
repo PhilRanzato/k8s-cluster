@@ -8,6 +8,15 @@ platforms:
     image: pycontribs-centos7-docker:latest
     dockerfile: Dockerfile.j2
     build_image: true
+    command: /sbin/init
+    capabilities:
+      - SYS_ADMIN
+    privileged: true
+  - name: worker
+    image: pycontribs-centos7-docker:latest
+    dockerfile: Dockerfile.j2
+    build_image: true
+    command: /sbin/init
     capabilities:
       - SYS_ADMIN
     privileged: true

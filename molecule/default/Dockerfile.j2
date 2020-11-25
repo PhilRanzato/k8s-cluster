@@ -1,5 +1,9 @@
 FROM docker.io/pycontribs/centos:7
 
+RUN yum install -y firewalld
+
+RUN systemctl enable firewalld
+
 RUN yum remove -y docker \
         docker-client \
         docker-client-latest \

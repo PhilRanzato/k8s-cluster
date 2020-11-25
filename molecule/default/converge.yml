@@ -1,9 +1,23 @@
 ---
-- name: Converge
-  hosts: all
+- name: Install Kubernetes on master nodes
+  hosts: master
   vars:
     cri:
       docker: true
+    node:
+      is_master: true
+  tasks:
+    - name: "Include k8s-cluster/"
+      include_role:
+        name: "k8s-cluster/"
+
+- name: Install Kubernetes on worker nodes
+  hosts: worker
+  vars:
+    cri:
+      docker: true
+    node:
+      is_worker: true
   tasks:
     - name: "Include k8s-cluster/"
       include_role:
