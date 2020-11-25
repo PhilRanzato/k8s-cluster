@@ -1,0 +1,6 @@
+---
+- name: "Copy the kubernetes repository file"
+  copy:
+    content: "kubernetes.repo"
+    dest: /etc/yum.repos.d/kubernetes.repo
+  become: true
