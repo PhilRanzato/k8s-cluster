@@ -37,10 +37,24 @@
   become: true
 
 - name: "Open firewall ports"
-  firewalld:
-    port: "{{ item }}/tcp"
-    permanent: yes
-    immediate: yes
-    state: enabled
-  loop: "{% if node.is_master is defined and node.is_master %}{{ ports.master }}{% elif node.is_worker is defined and node.is_worker %}{{ ports.worker }}{% else %}{{ ports.master }}{% endif %}"
-  become: true
+  block:
+
+  - name: "Open firewall ports on master"
+    firewalld:
+      port: "{{ item }}/tcp"
+      permanent: yes
+      immediate: yes
+      state: enabled
+    loop: "{{ ports.master }}"
+    when: node.is_master is defined and node.is_master
+    become: true
+
+  - name: "Open firewall ports on workers"
+    firewalld:
+      port: "{{ item }}/tcp"
+      permanent: yes
+      immediate: yes
+      state: enabled
+    loop: "{{ ports.worker }}"
+    when: node.is_worker is defined and node.is_worker
+    become: true
