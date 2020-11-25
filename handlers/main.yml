@@ -1,2 +1,7 @@
 ---
-# handlers file for philranzato.ansible-role
+- name: "Start and Enable Kubelet"
+  systemd:
+    name: kubelet
+    enabled: yes
+    state: started
+  become: true

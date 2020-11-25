@@ -7,9 +7,13 @@ cri:
 node:
   is_master: true
   is_worker: false
+  kubernetes:
+    version: 1.19.0
+
 
 nodeport_range: '30000-32767'
 
+# Firewall ports
 ports:
   master:
   - '6443' # Used by: all. Purpose: Kubernetes API server
