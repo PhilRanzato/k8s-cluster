@@ -4,3 +4,13 @@
     content: "kubernetes.repo"
     dest: /etc/yum.repos.d/kubernetes.repo
   become: true
+
+- name: "Disable Selinux"
+  selinux:
+    state: disabled
+  register: selinux
+
+- name: "Reboot if required"
+  reboot:
+    msg: "Rebooting after disabling selinux"
+  when: selinux.reboot_required
