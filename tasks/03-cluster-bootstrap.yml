@@ -12,14 +12,18 @@
     state: directory
     path: $HOME/.kube
     recurse: yes
+    owner: root
+    group: root
+    mode: '0644'
   become: true
 
 - name: "Copy admin.conf inside $HOME/.kube/config"
   copy:
     src: /etc/kubernetes/admin.conf
     dest: $HOME/.kube/config
-    owner: "root"
-    group: "root"
+    owner: root
+    group: root
+    mode: '0644'
   become: true
 
 - name: "Apply the CNI ({{ cni.name | capitalize }})"

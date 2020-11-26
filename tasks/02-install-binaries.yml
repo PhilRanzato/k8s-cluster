@@ -3,6 +3,9 @@
   copy:
     src: "kubernetes.repo"
     dest: /etc/yum.repos.d/kubernetes.repo
+    owner: root
+    group: root
+    mode: '0644'
   become: true
 
 - name: "Disable Selinux"
@@ -28,3 +31,6 @@
   - "kubectl{% if node.kubernetes.version is defined %}-{{ node.kubernetes.version }}{% endif %}"
   become: true
   notify: "Start and Enable Kubelet"
+
+- name: "Ensure kubelet is started"
+  meta: flush_handlers

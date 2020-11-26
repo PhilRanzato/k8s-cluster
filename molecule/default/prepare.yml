@@ -1,0 +1,15 @@
+---
+- name: Start docker
+  hosts: all
+  tasks:
+    - name: "Modprobe ext4"
+      modprobe:
+        name: ext4
+        state: present
+        
+    - name: "Start docker"
+      systemd:
+        name: "docker"
+        state: started
+        enabled: yes
+      become: true

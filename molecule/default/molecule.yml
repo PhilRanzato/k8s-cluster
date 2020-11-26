@@ -12,6 +12,9 @@ platforms:
     capabilities:
       - SYS_ADMIN
     privileged: true
+    volumes:
+    - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    - /lib/modules:/lib/modules:ro
   - name: worker
     image: pycontribs-centos7-docker:latest
     dockerfile: Dockerfile.j2
@@ -20,6 +23,9 @@ platforms:
     capabilities:
       - SYS_ADMIN
     privileged: true
+    volumes:
+    - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    - /lib/modules:/lib/modules:ro
 provisioner:
   name: ansible
   # env: 

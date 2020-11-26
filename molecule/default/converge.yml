@@ -7,7 +7,7 @@
     node:
       is_master: true
       kubernetes:
-        version: 1.18.0
+        version: 1.19.0
   tasks:
     - name: "Include k8s-cluster/"
       include_role:

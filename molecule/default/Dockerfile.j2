@@ -1,4 +1,4 @@
-FROM docker.io/pycontribs/centos:7
+FROM centos:7
 
 RUN yum install -y firewalld
 
@@ -17,3 +17,17 @@ RUN yum install -y yum-utils && \
     yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 
 RUN yum install -y docker-ce docker-ce-cli containerd.io
+
+RUN yum makecache fast \
+ && yum -y install deltarpm epel-release initscripts \
+ && yum -y update \
+ && yum -y install \
+      sudo \
+      which \
+      python3-pip \
+ && yum clean all
+
+RUN yum install -y e4fsprogs 
+
+VOLUME ["/sys/fs/cgroup"]
+
