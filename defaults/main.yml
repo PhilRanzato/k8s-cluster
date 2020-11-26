@@ -10,8 +10,12 @@ node:
   kubernetes:
     version: 1.19.0
 
-
-nodeport_range: '30000-32767'
+cni:
+  name: calico
+  pod_network_cidr: 192.168.0.0/16
+  nodeport_range: '30000-32767'
+  yaml_url: https://docs.projectcalico.org/latest/manifests/calico.yaml
+  # yaml_path: /tmp/calico.yaml
 
 # Firewall ports
 ports:
@@ -23,4 +27,6 @@ ports:
   - '10252' # Used by: Self. Purpose: kube-controller-manager
   worker:
   - '10250' # Used by: Kubelet API Self, Control plane. Purpose: Kubelet
-  -  "{{ nodeport_range }}" # Used by: NodePort Services, Control plane. Purpose: All
+  -  "{{ cni.nodeport_range }}" # Used by: NodePort Services, Control plane. Purpose: All
+
+enable_worload_on_master: false

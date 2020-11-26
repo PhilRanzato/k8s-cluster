@@ -7,3 +7,7 @@
 
 - name: "Install Binaries"
   include_tasks: 02-install-binaries.yml
+
+- name: "Bootstrap cluster"
+  include_tasks: 03-cluster-bootstrap.yml
+  when: node.is_master

@@ -1,0 +1,32 @@
+---
+- name: "Create Cluster with kubeadm"
+  command: |
+    kubeadm init \
+      --pod-network-cidr={{ cni.pod_network_cidr }}
+  # no module for kubeadm
+  tags:
+  - skip_ansible_lint
+
+- name: "Create $HOME/.kube"
+  file:
+    state: directory
+    path: $HOME/.kube
+    recurse: yes
+  become: true
+
+- name: "Copy admin.conf inside $HOME/.kube/config"
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: $HOME/.kube/config
+    owner: "root"
+    group: "root"
+  become: true
+
+- name: "Apply the CNI ({{ cni.name | capitalize }})"
+  k8s:
+    state: present
+    src: "{% if cni.yaml_url is defined %}{{ cni.yaml_url }}{% else if cni.yaml_path is defined %}{{ cni.yaml_path }}{% endif %}"
+
+- name: "Enable workload on master nodes"
+  command: kubectl taint nodes --all node-role.kubernetes.io/master- #noqa 305
+  when: enable_worload_on_master
